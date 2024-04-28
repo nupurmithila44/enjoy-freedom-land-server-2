@@ -37,6 +37,34 @@ async function run() {
         res.send(result)
     })
 
+    app.get('/addTours/:id', async(req, res)=>{
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id)}
+        const result = await tourismCollection.findOne(query)
+        res.send(result)
+    })
+
+    app.put('/addTours/:id',  async(req, res)=>{
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)}
+        const options = { upsert: true };
+        const updateTour = req.body
+        const updateDoc = {
+            $set: {
+                countryName : updateTour.countryName,
+                tourName: updateTour.tourName,
+                avgCost : updateTour.avgCost,
+                totalVisitors: updateTour.totalVisitors,
+                seasonality: updateTour.seasonality,
+                travelTime: updateTour.travelTime,
+                photo: updateTour.photo 
+            },
+          };
+          const result = await tourismCollection.updateOne(filter,updateDoc,options)
+          res.send(result)
+       
+    })
+
 
 
    app.post('/addTours', async(req, res)=>{
