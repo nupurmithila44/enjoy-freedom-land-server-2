@@ -37,6 +37,15 @@ async function run() {
         res.send(result)
     })
 
+    // app.get('/addTours', async(req, res)=>{
+    //  const options = {
+    //   sort: { avgCost:1},
+    //  }
+    //  const cursor = tourismCollection.find().sort({avgCost:1})
+    //  const result = await cursor.toArray();
+    //  res.send(result);
+    // })
+
     app.get('/addTours/:id', async(req, res)=>{
         const id = req.params.id;
         const query = { _id: new ObjectId(id)}
