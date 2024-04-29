@@ -30,12 +30,19 @@ async function run() {
     // await client.connect();
 
     const tourismCollection = client.db('tourismDB').collection('tourism')
+    const countriCollection = client.db('tourismDB').collection('Countries')
 
     app.get('/addTours', async(req, res)=>{
         const cursor = tourismCollection.find();
         const result = await cursor.toArray();
         res.send(result)
     })
+
+    app.get('/countris', async(req, res)=>{
+      const cursor = countriCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+  })
 
     // app.get('/addTours', async(req, res)=>{
     //  const options = {
