@@ -7,7 +7,7 @@ const port = process.env.PORT || 5000;
 
 
 // midleware 
-app.use(cors())
+app.use(cors({origin:["http://localhost:5173", "https://enjoy-freedom-land-client.netlify.app"]}))
 app.use(express.json());
 
 
@@ -32,72 +32,63 @@ async function run() {
     const tourismCollection = client.db('tourismDB').collection('tourism')
     const countriCollection = client.db('tourismDB').collection('Countries')
 
-    app.get('/addTours', async(req, res)=>{
-        const cursor = tourismCollection.find();
-        const result = await cursor.toArray();
-        res.send(result)
+    app.get('/addTours', async (req, res) => {
+      const cursor = tourismCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
     })
 
-    app.get('/countris', async(req, res)=>{
+    app.get('/countris', async (req, res) => {
       const cursor = countriCollection.find();
       const result = await cursor.toArray();
       res.send(result)
-  })
-
-    // app.get('/addTours', async(req, res)=>{
-    //  const options = {
-    //   sort: { avgCost:1},
-    //  }
-    //  const cursor = tourismCollection.find().sort({avgCost:1})
-    //  const result = await cursor.toArray();
-    //  res.send(result);
-    // })
-
-    app.get('/addTours/:id', async(req, res)=>{
-        const id = req.params.id;
-        const query = { _id: new ObjectId(id)}
-        const result = await tourismCollection.findOne(query)
-        res.send(result)
     })
 
-    app.put('/addTours/:id',  async(req, res)=>{
-        const id = req.params.id;
-        const filter = {_id: new ObjectId(id)}
-        const options = { upsert: true };
-        const updateTour = req.body
-        const updateDoc = {
-            $set: {
-                countryName : updateTour.countryName,
-                tourName: updateTour.tourName,
-                avgCost : updateTour.avgCost,
-                totalVisitors: updateTour.totalVisitors,
-                seasonality: updateTour.seasonality,
-                travelTime: updateTour.travelTime,
-                photo: updateTour.photo 
-            },
-          };
-          const result = await tourismCollection.updateOne(filter,updateDoc,options)
-          res.send(result)
-       
+    app.get('/addTours/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await tourismCollection.findOne(query)
+      res.send(result)
+    })
+
+    app.put('/addTours/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const updateTour = req.body
+      const updateDoc = {
+        $set: {
+          countryName: updateTour.countryName,
+          tourName: updateTour.tourName,
+          avgCost: updateTour.avgCost,
+          totalVisitors: updateTour.totalVisitors,
+          seasonality: updateTour.seasonality,
+          travelTime: updateTour.travelTime,
+          photo: updateTour.photo
+        },
+      };
+      const result = await tourismCollection.updateOne(filter, updateDoc, options)
+      res.send(result)
+
     })
 
 
 
-   app.post('/addTours', async(req, res)=>{
-    const newTour=req.body
-    console.log(newTour)
-    const result = await tourismCollection.insertOne(newTour)
-    res.send(result);
-   
-   })
+    app.post('/addTours', async (req, res) => {
+      const newTour = req.body
+      console.log(newTour)
+      const result = await tourismCollection.insertOne(newTour)
+      res.send(result);
 
-   app.delete('/addTours/:id', async(req, res)=>{
-    const id = req.params.id;
-    const query = { _id: new ObjectId(id) }
-    const result = await tourismCollection.deleteOne(query)
-    res.send(result)
+    })
 
-   })
+    app.delete('/addTours/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await tourismCollection.deleteOne(query)
+      res.send(result)
+
+    })
 
 
     // Send a ping to confirm a successful connection
@@ -114,10 +105,10 @@ run().catch(console.dir);
 
 
 
-app.get('/', (req,res)=>{
-    res.send('all tourest comming')
+app.get('/', (req, res) => {
+  res.send('all tourest comming')
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-  })
+  console.log(`Example app listening on port ${port}`)
+})
